@@ -1,1 +1,32 @@
-
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Рецепты Малайзии и Индонезии: знакомьтесь с кухней Юго-Восточной Азии.">
+<title>Dapur Nusantara — Рецепты Малайзии и Индонезии</title>
+<style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#243329;background:#fffaf1}*{box-sizing:border-box}body{margin:0}header{background:#15583e;color:white;padding:24px 18px}header .wrap,main,footer .wrap{max-width:1050px;margin:auto}h1{margin:0;font-size:clamp(1.7rem,4vw,2.6rem)}header p{margin:8px 0 0;color:#e2f3e7}main{padding:28px 18px 48px}.intro{max-width:720px;line-height:1.65}.search{width:100%;padding:15px;border:1px solid #a8b8aa;border-radius:12px;font:inherit;margin:15px 0 22px}.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}.filters button{border:1px solid #8caa96;background:white;padding:10px 15px;border-radius:99px;cursor:pointer;font:inherit}.filters button.active{background:#15583e;color:white}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.card{background:white;border:1px solid #e2e5dc;border-radius:16px;overflow:hidden;box-shadow:0 5px 20px #102b1a0d}.food{height:150px;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#e5eddc,#f5d9a7);font-size:64px}.body{padding:19px}.country{font-size:.85rem;color:#52745c}.body h2{font-size:1.2rem;margin:8px 0}.body p{line-height:1.5;color:#4b5d4f;min-height:70px}.link{display:inline-block;background:#15583e;color:white;text-decoration:none;padding:11px 15px;border-radius:10px;font-weight:600}.link:hover{background:#0b402b}.notice{background:#fff2d5;border-left:4px solid #bd8d36;padding:15px;margin-top:25px;border-radius:8px;line-height:1.6}footer{background:#e9eee4;padding:20px 18px;color:#445c49;font-size:.9rem}#empty{display:none;padding:20px}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #ffad33;outline-offset:3px}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>🍲 Dapur Nusantara</h1><p>Малайзийская и индонезийская кухня — откройте новые вкусы!</p></div></header>
+<main><p class="intro">Добро пожаловать! Откройте для себя традиционные блюда Малайзии и Индонезии. Здесь вы найдёте идеи для приготовления и ссылки на видео авторов.</p>
+<label for="search"><strong>Поиск рецепта</strong></label><input id="search" class="search" type="search" placeholder="Например: ренданг, nasi lemak, суп..." autocomplete="off">
+<div class="filters" aria-label="Фильтр по стране"><button class="active" data-country="all" aria-pressed="true">Все блюда</button><button data-country="Malaysia" aria-pressed="false">🇲🇾 Малайзия</button><button data-country="Indonesia" aria-pressed="false">🇮🇩 Индонезия</button></div>
+<section class="grid" id="recipes" aria-label="Рецепты"></section><p id="empty">Ничего не найдено. Попробуйте другое название.</p>
+<div class="notice"><strong>О видео:</strong> Сейчас кнопки ведут к поиску рецептов на YouTube, а не к конкретным авторам. На следующем этапе мы добавим проверенные ссылки на оригинальные видео и имена создателей. Доступность YouTube в России может быть ограничена.</div>
+</main><footer><div class="wrap">© Dapur Nusantara · Знакомство с кухней Малайзии и Индонезии</div></footer>
+<script>
+const recipes=[
+{name:'Наси Лемак',latin:'Nasi Lemak',country:'Malaysia',emoji:'🍚',description:'Рис с кокосовым молоком, острым соусом самбал и традиционными добавками.',search:'nasi lemak recipe malaysia'},
+{name:'Ренданг',latin:'Rendang Daging',country:'Indonesia',emoji:'🍛',description:'Ароматная говядина, медленно тушённая в кокосовом молоке и специях.',search:'rendang daging resep indonesia'},
+{name:'Аям Масак Мерах',latin:'Ayam Masak Merah',country:'Malaysia',emoji:'🍗',description:'Курица в пряном томатном соусе — любимое праздничное блюдо.',search:'ayam masak merah resepi'},
+{name:'Сото Аям',latin:'Soto Ayam',country:'Indonesia',emoji:'🍜',description:'Индонезийский куриный суп с душистыми специями.',search:'soto ayam resep indonesia'},
+{name:'Лакса',latin:'Laksa',country:'Malaysia',emoji:'🥣',description:'Насыщенный суп с лапшой и яркими ароматами специй.',search:'laksa malaysia resepi'},
+{name:'Гадо-гадо',latin:'Gado Gado',country:'Indonesia',emoji:'🥗',description:'Овощи с густым арахисовым соусом.',search:'gado gado resep indonesia'}
+];
+let country='all';const root=document.getElementById('recipes'),search=document.getElementById('search');
+function render(){const term=search.value.trim().toLocaleLowerCase();const filtered=recipes.filter(r=>(country==='all'||r.country===country)&&[r.name,r.latin,r.description,r.country].join(' ').toLocaleLowerCase().includes(term));root.replaceChildren();for(const r of filtered){const card=document.createElement('article');card.className='card';const food=document.createElement('div');food.className='food';food.textContent=r.emoji;food.setAttribute('aria-hidden','true');const body=document.createElement('div');body.className='body';const tag=document.createElement('div');tag.className='country';tag.textContent=r.country==='Malaysia'?'🇲🇾 Малайзия':'🇮🇩 Индонезия';const h=document.createElement('h2');h.textContent=r.name+' · '+r.latin;const p=document.createElement('p');p.textContent=r.description;const a=document.createElement('a');a.className='link';a.href='https://www.youtube.com/results?search_query='+encodeURIComponent(r.search);a.target='_blank';a.rel='noopener noreferrer';a.textContent='▶ Найти видео на YouTube';body.append(tag,h,p,a);card.append(food,body);root.append(card)}document.getElementById('empty').style.display=filtered.length?'none':'block'}
+search.addEventListener('input',render);document.querySelectorAll('[data-country]').forEach(btn=>btn.addEventListener('click',()=>{country=btn.dataset.country;document.querySelectorAll('[data-country]').forEach(b=>{b.classList.toggle('active',b===btn);b.setAttribute('aria-pressed',String(b===btn))});render()}));render();
+</script>
+</body></html>
